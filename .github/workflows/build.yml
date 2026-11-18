@@ -1,0 +1,26 @@
+name: Build KeyCastOW
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Quellcode laden
+        uses: actions/checkout@v4
+
+      - name: MSBuild einrichten
+        uses: microsoft/setup-msbuild@v2
+
+      - name: KeyCastOW kompilieren
+        run: msbuild /p:platform=win32 /p:Configuration=Release /p:PlatformToolset=v143
+
+      - name: Fertige EXE bereitstellen
+        uses: actions/upload-artifact@v4
+        with:
+          name: KeyCastOW-Windows
+          path: Release/keycastow.exe
